@@ -1,0 +1,32 @@
+{
+  "name": "login.dfe.saml-proxy",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "setup": "./generate-certs.sh",
+    "dev": "PORT=4432 node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DFE-Digital/login.dfe.saml-proxy.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DFE-Digital/login.dfe.saml-proxy/issues"
+  },
+  "homepage": "https://github.com/DFE-Digital/login.dfe.saml-proxy#readme",
+  "dependencies": {
+    "express": "^4.15.4"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0"
+  }
+}
