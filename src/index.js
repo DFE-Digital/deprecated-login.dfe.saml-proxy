@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const routes = require('./Routes');
+const config = require('./Config');
 
 const app = express();
 
@@ -17,10 +18,7 @@ app.set('views', path.resolve(__dirname, 'views'));
 routes.register(app);
 
 // Setup server
-const host = process.env.HOST ? process.env.HOST : 'localhost';
-const port = process.env.PORT ? process.env.PORT : 4432;
-
-if (process.env.NODE_ENV === undefined || process.env.NODE_ENV === 'dev') {
+if (config.hostingEnvironment.env == 'dev') {
     app.proxy = true;
 
     const https = require('https');
@@ -32,11 +30,11 @@ if (process.env.NODE_ENV === undefined || process.env.NODE_ENV === 'dev') {
     };
     const server = https.createServer(options, app);
 
-    server.listen(port, function () {
-        console.log(`Dev server listening on https://${host}:${port}`);
+    server.listen(config.hostingEnvironment.port, function () {
+        console.log(`Dev server listening on https://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}`);
     })
 } else {
-    app.listen(port, function() {
-        console.log(`Dev server listening on http://${host}:${port}`);
+    app.listen(config.hostingEnvironment.port, function() {
+        console.log(`Dev server listening on http://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}`);
     });
 }

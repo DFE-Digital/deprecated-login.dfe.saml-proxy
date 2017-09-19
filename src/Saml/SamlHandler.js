@@ -1,5 +1,6 @@
 const SamlRequest = require('./SamlRequest');
 const uuid = require('./../Utils/Uuid');
+const config = require('./../Config');
 
 class SamlHandler {
     static register(app) {
@@ -16,13 +17,13 @@ class SamlHandler {
         const newSamlRequest = new SamlRequest('Authn', {
             id: uuid(),
             issueInstant: new Date(),
-            destination: 'AUTHENTICATING_SAML_ENDPOINT',
+            destination: config.authenticatingServer.url,
             issuer: 'ENTITY_ID',
-            assertionConsumerServiceUrl: 'https://localhost:4432/saml/response'
+            assertionConsumerServiceUrl: `${config.hostingEnvironment.protocol}://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}/saml/response`
         });
 
         res.render('redirecttoauthenticatingservice', {
-            destination: 'AUTHENTICATING_SAML_ENDPOINT',
+            destination: config.authenticatingServer.url,
             samlRequest: newSamlRequest.toXmlString(),
             relayState: uuid()
         });
