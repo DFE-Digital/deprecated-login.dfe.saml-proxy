@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Redirecting</title>
+</head>
+<body>
+<form method="post" action="<%=destination%>">
+    <input type="hidden" name="SAMLRequest" value="<%=samlRequest%>" />
+    <input type="hidden" name="RelayState" value="<%=relayState%>" />
+    <input type="submit" value="Continue" />
+</form>
+</body>
+</html>

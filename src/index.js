@@ -1,14 +1,20 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const fs = require('fs');
+const path = require('path');
+const routes = require('./Routes');
 
 const app = express();
 
+// Add middleware
+app.use(bodyParser.urlencoded({extended: true}));
+
+// Set view engine
+app.set('view engine', 'ejs');
+app.set('views', path.resolve(__dirname, 'views'));
 
 // Setup routes
-app.get('/', function(req, res) {
-    res.send('Hi there');
-});
-
+routes.register(app);
 
 // Setup server
 const host = process.env.HOST ? process.env.HOST : 'localhost';
