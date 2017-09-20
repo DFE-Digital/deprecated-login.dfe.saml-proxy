@@ -4,7 +4,7 @@ const proxyquire =  require('proxyquire');
 let uuidStubValue = '79da58a4-9d37-11e7-abc4-cec278b6b50a';
 const uuidStub = function() {
     return uuidStubValue;
-}
+};
 
 describe('when producing a new uuid', function() {
     let uuid;

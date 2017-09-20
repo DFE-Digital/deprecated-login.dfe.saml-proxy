@@ -1,3 +1,5 @@
+const InMemoryCacheProvider = require('./../Caching/InMemoryCacheProvider');
+
 module.exports = {
   hostingEnvironment: {
     env: process.env.NODE_ENV ? process.env.NODE_ENV : 'dev',
@@ -8,5 +10,8 @@ module.exports = {
   authenticatingServer: {
     url: process.env.AUTHENTICATING_SERVER_URL,
     entityId: process.env.AUTHENTICATING_SERVER_ENTITYID
+  },
+  services: {
+    cache: new InMemoryCacheProvider()
   }
 };
