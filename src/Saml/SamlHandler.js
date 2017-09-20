@@ -18,7 +18,7 @@ class SamlHandler {
             id: uuid(),
             issueInstant: new Date(),
             destination: config.authenticatingServer.url,
-            issuer: 'ENTITY_ID',
+            issuer: config.authenticatingServer.entityId,
             assertionConsumerServiceUrl: `${config.hostingEnvironment.protocol}://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}/saml/response`
         });
 

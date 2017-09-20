@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dev launchpad</title>
+</head>
+<body>
+    <form method="post" action="<%=auth.destination%>">
+        <input type="hidden" name="SAMLRequest" value="<%=auth.samlRequest%>" />
+        <input type="hidden" name="RelayState" value="<%=auth.relayState%>" />
+        <input type="submit" value="Start authentication" />
+    </form>
+</body>
+</html>
