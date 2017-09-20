@@ -18,3 +18,5 @@ class InMemoryCacheProvider extends CacheProvider {
   }
 
 }
+
+module.exports = InMemoryCacheProvider

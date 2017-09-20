@@ -1,4 +1,5 @@
 const SamlRequest = require('./SamlRequest');
+const SamlResponse = require('./SamlResponse');
 const uuid = require('./../Utils/Uuid');
 const config = require('./../Config');
 
@@ -13,7 +14,7 @@ class SamlHandler {
     const relayState = req.body.RelayState;
 
     const newSamlRequest = new SamlRequest('Authn', {
-      id: uuid(),
+      id: `_${uuid()}`,
       issueInstant: new Date(),
       destination: config.authenticatingServer.url,
       issuer: config.authenticatingServer.entityId,
@@ -40,6 +41,8 @@ class SamlHandler {
   }
 
   static postResponse(req, res) {
+    var response = SamlResponse.parse(req.body.SAMLResponse);
+
     res.send('you posted a response');
   }
 }

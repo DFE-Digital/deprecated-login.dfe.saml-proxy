@@ -30,9 +30,15 @@ describe('When parsing a valid request', function() {
             const actual = SamlRequest.parse(validAuthnRequest);
 
             expect(actual.id).to.equal('idf6a91730cfe0410791224c3ff6e7281e');
-            expect(actual.issueInstant.toString()).to.equal(new Date(2017, 8, 18, 7, 45, 24, 0).toString());
             expect(actual.destination).to.equal('http://localhost:8472/Saml');
             expect(actual.issuer).to.equal('https://localhost:3941/1232190a');
+
+            expect(actual.issueInstant.getUTCFullYear()).to.equal(2017);
+            expect(actual.issueInstant.getUTCMonth()).to.equal(8);
+            expect(actual.issueInstant.getUTCDate()).to.equal(18);
+            expect(actual.issueInstant.getUTCHours()).to.equal(6);
+            expect(actual.issueInstant.getUTCMinutes()).to.equal(45);
+            expect(actual.issueInstant.getUTCSeconds()).to.equal(24);
         });
 
         it('then it should parse specific Authn properties from request', function() {

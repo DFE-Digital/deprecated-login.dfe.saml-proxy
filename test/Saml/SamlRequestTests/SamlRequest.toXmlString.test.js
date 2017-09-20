@@ -13,7 +13,7 @@ describe('When making an XML string', function() {
             beforeEach(function() {
                 authnRequest = new SamlRequest('Authn', {
                     id: '6a5a3e52-9d3d-11e7-abc4-cec278b6b50a',
-                    issueInstant: new Date(2017, 8, 12, 19, 36, 42),
+                    issueInstant: new Date(Date.UTC(2017, 8, 12, 19, 36, 42)),
                     destination: 'http://auth.server',
                     issuer: 'http://entity.id',
                     assertionConsumerServiceUrl: 'http://proxy.url/saml/response'

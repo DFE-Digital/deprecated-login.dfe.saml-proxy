@@ -16,8 +16,6 @@ class SamlRequest {
     }
 
     toXmlString() {
-        console.log('making xml for ' + JSON.stringify(this));
-
         var xml = `<saml2p:${this.type}Request xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" `
                 + 'xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" '
                 + `ID="${this.id}" `
