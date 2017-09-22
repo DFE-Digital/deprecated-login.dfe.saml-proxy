@@ -1,5 +1,6 @@
 const Buffer = require('buffer').Buffer;
 const DOMParser = require('xmldom').DOMParser;
+const XmlHelper = require('../Utils/XmlHelper');
 
 const SamlPNS = 'urn:oasis:names:tc:SAML:2.0:protocol';
 const Saml2NS = 'urn:oasis:names:tc:SAML:2.0:assertion';
@@ -20,7 +21,7 @@ class SamlRequest {
                 + 'xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" '
                 + `ID="${this.id}" `
                 + 'Version="2.0" '
-                + `IssueInstant="${_toXmlDateTimeString(this.issueInstant)}" `
+                + `IssueInstant="${XmlHelper.toXmlDateTimeString(this.issueInstant)}" `
                 + `Destination="${this.destination}" `;
 
         if (this.type == 'Authn') {
@@ -65,14 +66,4 @@ function _parseRequestType(doc) {
     }
 
     return requestType;
-}
-function _toXmlDateTimeString(date) {
-    const year = date.getUTCFullYear();
-    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-    const day = date.getUTCDate().toString().padStart(2, '0');
-    const hour = date.getUTCHours().toString().padStart(2, '0');
-    const minute = date.getUTCMinutes().toString().padStart(2, '0');
-    const second = date.getUTCSeconds().toString().padStart(2, '0');
-
-    return `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
 }

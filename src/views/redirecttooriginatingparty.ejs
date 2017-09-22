@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Redirecting</title>
+</head>
+<body>
+    <form id="main" method="post" action="<%=destination%>">
+        <input type="hidden" name="SAMLResponse" value="<%=samlResponse%>" />
+        <input type="hidden" name="RelayState" value="<%=relayState%>" />
+        <input type="submit" value="Continue" />
+    </form>
+    <script>
+        document.getElementById('main').submit();
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?><samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_c146a4b8-57a7-4451-87bd-97f2a33298ef" Version="2.0" IssueInstant="2017-09-20T14:55:00.895Z" Destination="https://localhost:4432/saml/response" InResponseTo="_9434643bf16c4b45b04b7b29c45ec11c">
+    <Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion">https://identifying.party/37c2dd70-7188-4743-a830-41936ecfbcab/</Issuer>
+    <samlp:Status>
+        <samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+    </samlp:Status>
+    <Assertion xmlns="urn:oasis:names:tc:SAML:2.0:assertion" ID="_4efb0925-2b6f-4168-aa75-662d144fac54" IssueInstant="2017-09-20T14:55:00.879Z" Version="2.0">
+        <Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion">https://identifying.party/37c2dd70-7188-4743-a830-41936ecfbcab/</Issuer><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><Reference URI="#_4efb0925-2b6f-4168-aa75-662d144fac54"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>ZdpXWx5NBy4ldG6cs5frTkBfoRQ=</DigestValue></Reference></SignedInfo><SignatureValue>RUg0pHAZeoDOKfXm9aRFOnBcyTCGGjH+8tuq/QKoIvhHaBd1rawbNtiGaszzh/0aim1DI+zENSd0LkX90ichbwxQ5jz8U0ufKeX9CKxTm2CVGXmusV4pBVOvmq6S1lMCfUMXduWwKCYxHdCF1h8n57lPCWBlat9Oo+GDAhEu74yo0cXHw6C6YUHjQ/+G5lueEsnXnHqY8/oaCP6CQn+WVlKTy/dlLAeXQbXS9vIrn91Dhcnp41idYYbn8iuW+D3TIU0xSjFVbBZmYnOBqsExgbV74KLg/hZINvRVRbbU5vl4atZAei7U+qmR3CxhaJUvf5h1EI8chtVCWag7lh8f7g==</SignatureValue></Signature>
+        <Subject>
+            <NameID Format="urn:oasis:names:tc:SAML:2.0:nameid-format:persistent">uN3eTylbujbBSupuxq4-5SIyvueVGXdx5Zkr7yVqQQc</NameID>
+            <SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+                <SubjectConfirmationData InResponseTo="_9434643bf16c4b45b04b7b29c45ec11c" NotOnOrAfter="2017-09-20T15:00:00.879Z" Recipient="https://localhost:4432/saml/response"/>
+            </SubjectConfirmation>
+        </Subject>
+        <Conditions NotBefore="2017-09-20T14:50:00.879Z" NotOnOrAfter="2057-09-20T15:50:00.879Z">
+            <AudienceRestriction>
+                <Audience>https://nsapoc.onmicrosoft.com/c5bfb710-0fcb-40c6-a929-28501c9499cc</Audience>
+            </AudienceRestriction>
+        </Conditions>
+        <AttributeStatement>
+            <Attribute Name="http://schemas.microsoft.com/identity/claims/tenantid">
+                <AttributeValue>37c2dd70-7188-4743-a830-41936ecfbcab</AttributeValue>
+            </Attribute>
+            <Attribute Name="http://schemas.microsoft.com/identity/claims/objectidentifier">
+                <AttributeValue>f3df26df-cb5f-427a-9ed4-df4d6b5de197</AttributeValue>
+            </Attribute>
+            <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname">
+                <AttributeValue>Bull</AttributeValue>
+            </Attribute>
+            <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname">
+                <AttributeValue>Simon</AttributeValue>
+            </Attribute>
+            <Attribute Name="http://schemas.microsoft.com/identity/claims/displayname">
+                <AttributeValue>Simon Bull</AttributeValue>
+            </Attribute>
+            <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress">
+                <AttributeValue>Simon.Bull@unit.tests</AttributeValue>
+            </Attribute>
+            <Attribute Name="http://schemas.microsoft.com/identity/claims/identityprovider">
+                <AttributeValue>https://identifying.party/37c2dd70-7188-4743-a830-41936ecfbcab/</AttributeValue>
+            </Attribute>
+            <Attribute Name="http://schemas.microsoft.com/claims/authnmethodsreferences">
+                <AttributeValue>http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/password</AttributeValue>
+            </Attribute>
+        </AttributeStatement>
+        <AuthnStatement AuthnInstant="2017-09-20T13:08:06.875Z" SessionIndex="_4efb0925-2b6f-4168-aa75-662d144fac54">
+            <AuthnContext>
+                <AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:Password</AuthnContextClassRef>
+            </AuthnContext>
+        </AuthnStatement>
+    </Assertion>
+</samlp:Response>

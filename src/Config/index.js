@@ -1,4 +1,5 @@
 const InMemoryCacheProvider = require('./../Caching/InMemoryCacheProvider');
+const fs = require('fs');
 
 module.exports = {
   hostingEnvironment: {
@@ -9,9 +10,16 @@ module.exports = {
   },
   authenticatingServer: {
     url: process.env.AUTHENTICATING_SERVER_URL,
-    entityId: process.env.AUTHENTICATING_SERVER_ENTITYID
+    entityId: process.env.AUTHENTICATING_SERVER_ENTITYID,
+    publicKey: fs.readFileSync('./ssl/authserver.cert', 'utf8')
   },
   services: {
     cache: new InMemoryCacheProvider()
+  },
+  crypto: {
+    signing: {
+      publicKey: fs.readFileSync('./ssl/localhost.cert', 'utf8'),
+      privateKey: fs.readFileSync('./ssl/localhost.key', 'utf8')
+    }
   }
 };
