@@ -1,4 +1,5 @@
 const InMemoryCacheProvider = require('../Caching/InMemoryCacheProvider');
+const StaticClientAdapter = require('../Clients/StaticClientAdapter');
 const fs = require('fs');
 
 module.exports = {
@@ -14,7 +15,8 @@ module.exports = {
     publicKey: fs.readFileSync('./ssl/authserver.cert', 'utf8')
   },
   services: {
-    cache: new InMemoryCacheProvider()
+    cache: new InMemoryCacheProvider(),
+    clients: new StaticClientAdapter()
   },
   crypto: {
     signing: {

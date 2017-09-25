@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     id: `_${uuid()}`,
     inResponseTo: context.original.request.id,
     issueInstant: new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())),
-    destination: context.original.request.issuer,
+    destination: context.original.request.assertionConsumerServiceUrl,
     issuer: 'http://me',
     status: authServerResponse.status,
     assertions: authServerResponse.assertions,
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
   })
 
   res.render('redirecttooriginatingparty', {
-    destination: context.original.request.issuer,
+    destination: context.original.request.assertionConsumerServiceUrl,
     samlResponse: response.toXmlString(Config.crypto.signing.privateKey),
     relayState: context.original.relayState
   });
