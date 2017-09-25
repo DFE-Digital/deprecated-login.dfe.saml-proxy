@@ -1,15 +1,15 @@
+'use strict';
+
+const express = require('express');
 const uuid = require('./../Utils/Uuid');
 const SamlRequest = require('./../Saml/SamlRequest');
-const config = require('./../Config')
+const Config = require('./../Config')
 
-class DevRoutes {
-  static register(app) {
-    app.get('/', DevRoutes.launchPad);
-    app.post('/dev/samlresponse', DevRoutes.samlResponse);
-  }
+const router = express.Router({mergeParams: true});
 
-  static launchPad(req, res) {
-    const serverBaseUrl = `${config.hostingEnvironment.protocol}://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}`;
+module.exports = () => {
+  router.get('/', (req, res) => {
+    const serverBaseUrl = `${Config.hostingEnvironment.protocol}://${Config.hostingEnvironment.host}:${Config.hostingEnvironment.port}`;
     const samlRequest = new SamlRequest('Authn', {
       id: uuid(),
       issueInstant: new Date(),
@@ -25,14 +25,15 @@ class DevRoutes {
         relayState: uuid()
       }
     });
-  }
+  });
 
-  static samlResponse(req, res) {
+  router.post('/dev/samlresponse', (req, res) => {
     res.render('dev/samlresponse', {
       samlResponse: req.body.SAMLResponse,
       relayState: req.body.RelayState
     });
-  }
-}
+  });
 
-module.exports = DevRoutes;
+  return router;
+
+};

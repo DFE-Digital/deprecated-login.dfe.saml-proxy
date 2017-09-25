@@ -5,6 +5,9 @@ const path = require('path');
 const routes = require('./Routes');
 const config = require('./Config');
 
+const saml = require('./Saml');
+const devLauncher = require('./DevLauncher');
+
 const app = express();
 
 // Add middleware
@@ -15,7 +18,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.resolve(__dirname, 'views'));
 
 // Setup routes
-routes.register(app);
+app.use('/saml', saml());
+app.use('/', devLauncher());
 
 // Setup server
 if (config.hostingEnvironment.env == 'dev') {
