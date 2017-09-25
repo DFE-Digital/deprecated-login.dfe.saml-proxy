@@ -1,4 +1,4 @@
-const InMemoryCacheProvider = require('./../Caching/InMemoryCacheProvider');
+const InMemoryCacheProvider = require('../Caching/InMemoryCacheProvider');
 const fs = require('fs');
 
 module.exports = {
