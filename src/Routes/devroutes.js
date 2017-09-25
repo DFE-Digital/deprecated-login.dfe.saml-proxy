@@ -5,6 +5,7 @@ const config = require('./../Config')
 class DevRoutes {
   static register(app) {
     app.get('/', DevRoutes.launchPad);
+    app.post('/dev/samlresponse', DevRoutes.samlResponse);
   }
 
   static launchPad(req, res) {
@@ -13,7 +14,7 @@ class DevRoutes {
       id: uuid(),
       issueInstant: new Date(),
       destination: `${serverBaseUrl}/saml`,
-      issuer: `${serverBaseUrl}/`,
+      issuer: `${serverBaseUrl}/dev/samlresponse`,
       assertionConsumerServiceUrl: `${serverBaseUrl}/dev/samlresponse`
     });
 
@@ -23,6 +24,13 @@ class DevRoutes {
         samlRequest: samlRequest.toXmlString(),
         relayState: uuid()
       }
+    });
+  }
+
+  static samlResponse(req, res) {
+    res.render('dev/samlresponse', {
+      samlResponse: req.body.SAMLResponse,
+      relayState: req.body.RelayState
     });
   }
 }
