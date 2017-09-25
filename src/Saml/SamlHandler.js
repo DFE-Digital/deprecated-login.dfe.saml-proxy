@@ -61,10 +61,7 @@ class SamlHandler {
       destination: context.original.request.issuer,
       samlResponse: response.toXmlString(config.crypto.signing.privateKey),
       relayState: context.original.relayState
-    })
-
-    res.type('xml');
-    res.send(response.toXmlString(config.crypto.signing.privateKey));
+    });
   }
 }
 
