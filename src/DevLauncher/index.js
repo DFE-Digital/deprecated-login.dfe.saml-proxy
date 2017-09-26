@@ -14,7 +14,7 @@ module.exports = () => {
       id: uuid(),
       issueInstant: new Date(),
       destination: `${serverBaseUrl}/saml`,
-      issuer: `${serverBaseUrl}/dev/samlresponse`,
+      issuer: 'https://localhost:4432/470d8218-a230-11e7-abc4-cec278b6b50a',
       assertionConsumerServiceUrl: `${serverBaseUrl}/dev/samlresponse`
     });
 

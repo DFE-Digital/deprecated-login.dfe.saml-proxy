@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
-const routes = require('./Routes');
 const config = require('./Config');
 
 const saml = require('./Saml');
