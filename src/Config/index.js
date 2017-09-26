@@ -1,6 +1,8 @@
 const InMemoryCacheProvider = require('../Caching/InMemoryCacheProvider');
 const StaticClientAdapter = require('../Clients/StaticClientAdapter');
+const FileSystemCertificateAdapter = require('../Certificates/FileSystemCertificateAdapter');
 const fs = require('fs');
+const path = require('path');
 
 module.exports = {
   hostingEnvironment: {
@@ -10,13 +12,12 @@ module.exports = {
     protocol: (process.env.NODE_ENV ? process.env.NODE_ENV : 'dev') == 'dev' ? 'https' : 'http'
   },
   authenticatingServer: {
-    url: process.env.AUTHENTICATING_SERVER_URL,
-    entityId: process.env.AUTHENTICATING_SERVER_ENTITYID,
-    publicKey: fs.readFileSync('./ssl/authserver.cert', 'utf8')
+    url: process.env.AUTHENTICATING_SERVER_URL
   },
   services: {
     cache: new InMemoryCacheProvider(),
-    clients: new StaticClientAdapter()
+    clients: new StaticClientAdapter(),
+    certificates: new FileSystemCertificateAdapter(path.resolve('./ssl'))
   },
   crypto: {
     signing: {

@@ -28,4 +28,4 @@ https://localhost:4432/
 
 ## Setting up with authenticating server
 
-When connecting to an external SAML IDP, you will need to add the public key. This can usually be taken from the metadata endpoint for the IDP. The certificate then needs storing in /ssl/authserver.cert.
+When connecting to an external SAML IDP, you will need to add the public key. This can usually be taken from the metadata endpoint for the IDP. The certificate then needs storing in /ssl/[ClientId].cert.

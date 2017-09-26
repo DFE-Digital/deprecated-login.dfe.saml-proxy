@@ -8,7 +8,8 @@ const XmlHelper = require('../Utils/XmlHelper');
 
 class SamlResponse {
 
-  constructor({id, inResponseTo, issueInstant, destination, issuer, status, assertions, sessionIndex, audience}) {
+  constructor({xml, id, inResponseTo, issueInstant, destination, issuer, status, assertions, sessionIndex, audience}) {
+    this.xml = xml;
     this.id = id;
     this.inResponseTo = inResponseTo;
     this.issueInstant = issueInstant;
@@ -20,6 +21,17 @@ class SamlResponse {
     this.audience = audience;
   }
 
+  verify(publicKey) {
+    const doc = new DOMParser().parseFromString(this.xml);
+
+    const signature = select(doc, "//*[local-name(.)='Signature' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#']")[0];
+    const sig = new SignedXml();
+    sig.keyInfoProvider = new KeyInfo(publicKey);
+    sig.loadSignature(signature);
+    const res = sig.checkSignature(this.xml);
+
+    return res;
+  }
   toXmlString(privateKey) {
     const issueInstantString = XmlHelper.toXmlDateTimeString(this.issueInstant);
 
@@ -91,12 +103,8 @@ class SamlResponse {
     return signedXml;
   }
 
-  static async parse(encodedSamlResponse, verifySignature = true, publicKey = null) {
+  static async parse(encodedSamlResponse) {
     const xml = Buffer.from(encodedSamlResponse, 'base64').toString();
-
-    if (verifySignature) {
-      _validateSignature(xml, publicKey);
-    }
 
     const doc = await _parseXml(xml);
     const response = doc.Response;
@@ -111,6 +119,7 @@ class SamlResponse {
       });
 
     return new SamlResponse({
+      xml: xml,
       id: response.$.ID,
       inResponseTo: response.$.InResponseTo,
       issueInstant: new Date(response.$.IssueInstant),
@@ -157,19 +166,6 @@ function _makeSignedXml(unsignedXml, privateKey) {
     }
   });
   return sig.getSignedXml();
-}
-
-function _validateSignature(xml, publicKey) {
-  const doc = new DOMParser().parseFromString(xml);
-
-  const signature = select(doc, "//*[local-name(.)='Signature' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#']")[0];
-  const sig = new SignedXml();
-  sig.keyInfoProvider = new KeyInfo(publicKey);
-  sig.loadSignature(signature);
-  const res = sig.checkSignature(xml)
-  if(!res) {
-    throw new Error(`SAMLResponse signature is invalid - ${sig.validationErrors}`);
-  }
 }
 
 function KeyInfo(publicKey) {

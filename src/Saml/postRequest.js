@@ -22,7 +22,7 @@ module.exports = (req, res) => {
     id: `_${uuid()}`,
     issueInstant: new Date(),
     destination: Config.authenticatingServer.url,
-    issuer: Config.authenticatingServer.entityId,
+    issuer: client.identifierUri,
     assertionConsumerServiceUrl: `${Config.hostingEnvironment.protocol}://${Config.hostingEnvironment.host}:${Config.hostingEnvironment.port}/saml/response`
   });
 
