@@ -19,11 +19,5 @@ module.exports = {
   },
   certificates: {
     storageRoot: path.resolve('./ssl')
-  },
-  crypto: {
-    signing: {
-      publicKey: fs.existsSync('./ssl/localhost.cert') ? fs.readFileSync('./ssl/localhost.cert', 'utf8') : null,
-      privateKey: fs.existsSync('./ssl/localhost.cert') ? fs.readFileSync('./ssl/localhost.key', 'utf8') : null
-    }
   }
 };

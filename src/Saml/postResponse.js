@@ -33,9 +33,10 @@ module.exports = async (req, res) => {
     audience: context.original.request.issuer
   })
 
+  const signingCert = certificateAdapter.load('saml-signing');
   res.render('redirecttooriginatingparty', {
     destination: context.original.request.assertionConsumerServiceUrl,
-    samlResponse: response.toXmlString(Config.crypto.signing.privateKey),
+    samlResponse: response.toXmlString(signingCert.privateKey),
     relayState: context.original.relayState
   });
 };

@@ -68,3 +68,5 @@ src/keystore.json
 ssl/**
 !ssl/470d8218-a230-11e7-abc4-cec278b6b50a.cert
 !ssl/470d8218-a230-11e7-abc4-cec278b6b50a.key
+!ssl/saml-signing.cert
+!ssl/saml-signing.key
