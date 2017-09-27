@@ -22,8 +22,8 @@ module.exports = {
   },
   crypto: {
     signing: {
-      publicKey: fs.readFileSync('./ssl/localhost.cert', 'utf8'),
-      privateKey: fs.readFileSync('./ssl/localhost.key', 'utf8')
+      publicKey: fs.existsSync('./ssl/localhost.cert') ? fs.readFileSync('./ssl/localhost.cert', 'utf8') : null,
+      privateKey: fs.existsSync('./ssl/localhost.cert') ? fs.readFileSync('./ssl/localhost.key', 'utf8') : null
     }
   }
 };
