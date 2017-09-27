@@ -1,5 +1,3 @@
-//const FileSystemCertificateAdapter = require('./../../../src/Certificates/FileSystemCertificateAdapter');
-
 const expect = require('chai').expect;
 const path = require('path');
 const fs = require('fs');
@@ -26,8 +24,8 @@ describe('When loading a certificate', function () {
     let expectedPrivateKey;
 
     beforeEach(function () {
-      expectedPublicKey = fs.readFileSync('./test/data/test1.cert', 'utf8');
-      expectedPrivateKey = fs.readFileSync('./test/data/test1.key', 'utf8');
+      expectedPublicKey = fs.readFileSync(path.resolve('./test/data/test1.cert'), 'utf8');
+      expectedPrivateKey = fs.readFileSync(path.resolve('./test/data/test1.key'), 'utf8');
     });
 
     it('then it should return the content of the .cert file as public key', function () {
