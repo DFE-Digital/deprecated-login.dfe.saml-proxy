@@ -1,3 +1,5 @@
+const ClientAdapter = require('./ClientAdapter');
+
 const clients = [
   {
     id: '470d8218-a230-11e7-abc4-cec278b6b50a',
@@ -9,14 +11,14 @@ const clients = [
   }
 ];
 
-class StaticClientAdapter {
-  get(identifierUri) {
+class StaticClientAdapter extends ClientAdapter {
+  async get(identifierUri) {
     for(let i = 0; i < clients.length; i++){
       if(clients[i].identifierUri.toLowerCase() === identifierUri.toLowerCase()) {
-        return clients[i];
+        return Promise.resolve(clients[i]);
       }
     }
-    return null;
+    return Promise.resolve(null);
   }
 }
 

@@ -2,19 +2,19 @@ const SamlRequest = require('./SamlRequest');
 const uuid = require('./../Utils/Uuid');
 const Config = require('./../Config');
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   const originalSamlRequest = SamlRequest.parse(req.body.SAMLRequest);
   const relayState = req.body.RelayState;
 
-  const client = Config.services.clients.get(originalSamlRequest.issuer);
+  const client = await Config.services.clients.get(originalSamlRequest.issuer);
   if(client == null) {
     res.status(400);
-    res.send('');
+    res.send('Invalid request');
     return;
   }
   if(!originalSamlRequest.validate(client)) {
     res.status(400);
-    res.send('');
+    res.send('Invalid request');
     return;
   }
 

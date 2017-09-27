@@ -5,7 +5,7 @@ const Config = require('./../Config');
 module.exports = async (req, res) => {
   const authServerResponse = await SamlResponse.parse(req.body.SAMLResponse);
   const context = Config.services.cache.get(authServerResponse.inResponseTo);
-  const client = Config.services.clients.get(context.original.request.issuer);
+  const client = await Config.services.clients.get(context.original.request.issuer);
   const now = new Date();
 
   const certificate = Config.services.certificates.load(client.id);
