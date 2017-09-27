@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "test": "./node_modules/.bin/mocha --reporter spec",
     "setup": "./generate-certs.sh",
-    "dev": "PORT=4432 node src/index.js"
+    "dev": "PORT=4433 node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
     "ejs": "^2.5.7",
     "express": "^4.15.4",
     "lru-cache": "^4.1.1",
+    "request": "^2.82.0",
+    "request-promise": "^4.2.2",
     "uuid": "^3.1.0",
     "xml-crypto": "^0.10.1",
     "xml2js": "^0.4.19",

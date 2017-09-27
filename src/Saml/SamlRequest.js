@@ -6,64 +6,77 @@ const SamlPNS = 'urn:oasis:names:tc:SAML:2.0:protocol';
 const Saml2NS = 'urn:oasis:names:tc:SAML:2.0:assertion';
 
 class SamlRequest {
-    constructor(type, {id, issueInstant, destination, issuer, assertionConsumerServiceUrl}) {
-        this.type = type;
+  constructor(type, {id, issueInstant, destination, issuer, assertionConsumerServiceUrl}) {
+    this.type = type;
 
-        this.id = id;
-        this.issueInstant = issueInstant;
-        this.destination = destination;
-        this.issuer = issuer;
-        this.assertionConsumerServiceUrl = assertionConsumerServiceUrl;
+    this.id = id;
+    this.issueInstant = issueInstant;
+    this.destination = destination;
+    this.issuer = issuer;
+    this.assertionConsumerServiceUrl = assertionConsumerServiceUrl;
+  }
+
+  validate(client) {
+    let hasValidReturnUrl = false;
+    client.returnUrls.forEach((returnUrl) => {
+      if (this.assertionConsumerServiceUrl.toLowerCase().startsWith(returnUrl.toLowerCase())) {
+        hasValidReturnUrl = true;
+      }
+    });
+    if (!hasValidReturnUrl) {
+      return false;
+    }
+    return true;
+  }
+
+  toXmlString() {
+    var xml = `<saml2p:${this.type}Request xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" `
+      + 'xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" '
+      + `ID="${this.id}" `
+      + 'Version="2.0" '
+      + `IssueInstant="${XmlHelper.toXmlDateTimeString(this.issueInstant)}" `
+      + `Destination="${this.destination}" `;
+
+    if (this.type == 'Authn') {
+      xml += `AssertionConsumerServiceURL="${this.assertionConsumerServiceUrl}" `
     }
 
-    toXmlString() {
-        var xml = `<saml2p:${this.type}Request xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol" `
-                + 'xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" '
-                + `ID="${this.id}" `
-                + 'Version="2.0" '
-                + `IssueInstant="${XmlHelper.toXmlDateTimeString(this.issueInstant)}" `
-                + `Destination="${this.destination}" `;
+    xml += '>';
+    xml += `<saml2:Issuer>${this.issuer}</saml2:Issuer>`;
+    xml += '</saml2p:AuthnRequest>';
 
-        if (this.type == 'Authn') {
-            xml += `AssertionConsumerServiceURL="${this.assertionConsumerServiceUrl}" `
-        }
+    return new Buffer(xml).toString('base64');
+  }
 
-        xml += '>';
-        xml += `<saml2:Issuer>${this.issuer}</saml2:Issuer>`;
-        xml += '</saml2p:AuthnRequest>';
+  static parse(encodedSamlRequest) {
+    const xml = Buffer.from(encodedSamlRequest, 'base64').toString();
+    const doc = new DOMParser().parseFromString(xml);
 
-        return new Buffer(xml).toString('base64');
+    const requestType = _parseRequestType(doc);
+    const requestData = {
+      id: doc.documentElement.getAttribute('ID'),
+      issueInstant: new Date(doc.documentElement.getAttribute('IssueInstant')),
+      destination: doc.documentElement.getAttribute('Destination'),
+      issuer: doc.documentElement.getElementsByTagNameNS(Saml2NS, 'Issuer')[0].childNodes[0].data
+    };
+
+    if (requestType == 'Authn') {
+      requestData['assertionConsumerServiceUrl'] = doc.documentElement.getAttribute('AssertionConsumerServiceURL');
     }
 
-    static parse(encodedSamlRequest) {
-        const xml = Buffer.from(encodedSamlRequest, 'base64').toString();
-        const doc = new DOMParser().parseFromString(xml);
-
-        const requestType = _parseRequestType(doc);
-        const requestData = {
-            id: doc.documentElement.getAttribute('ID'),
-            issueInstant: new Date(doc.documentElement.getAttribute('IssueInstant')),
-            destination: doc.documentElement.getAttribute('Destination'),
-            issuer: doc.documentElement.getElementsByTagNameNS(Saml2NS, 'Issuer')[0].childNodes[0].data
-        };
-
-        if (requestType == 'Authn') {
-            requestData['assertionConsumerServiceUrl'] = doc.documentElement.getAttribute('AssertionConsumerServiceURL');
-        }
-
-        return new SamlRequest(requestType, requestData);
-    }
+    return new SamlRequest(requestType, requestData);
+  }
 }
 
 module.exports = SamlRequest;
 
 
 function _parseRequestType(doc) {
-    let requestType = doc.documentElement.localName;
+  let requestType = doc.documentElement.localName;
 
-    if (requestType.endsWith('Request')) {
-        requestType = requestType.substring(0, requestType.length - 7);
-    }
+  if (requestType.endsWith('Request')) {
+    requestType = requestType.substring(0, requestType.length - 7);
+  }
 
-    return requestType;
+  return requestType;
 }

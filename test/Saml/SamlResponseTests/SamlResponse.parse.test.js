@@ -13,14 +13,14 @@ describe('When parsing an encoded SAML response', function() {
     const publicKey = fs.readFileSync(path.resolve('./test/unittest.cert'), 'utf8');
 
     it('then it should return a SamlResponse', async function() {
-      const actual = await SamlResponse.parse(encodedSamlResponse, false);
+      const actual = await SamlResponse.parse(encodedSamlResponse);
 
       expect(actual).to.not.be.null;
       expect(actual).to.be.instanceOf(SamlResponse);
     });
 
     it('then it should extract header information', async function () {
-      const actual = await SamlResponse.parse(encodedSamlResponse, false); //TODO: fix so can validate sig
+      const actual = await SamlResponse.parse(encodedSamlResponse);
 
       expect(actual.id).to.equal('_c146a4b8-57a7-4451-87bd-97f2a33298ef');
       expect(actual.inResponseTo).to.equal('_9434643bf16c4b45b04b7b29c45ec11c');
@@ -30,7 +30,7 @@ describe('When parsing an encoded SAML response', function() {
     });
 
     it('then it should extract assertions', async function() {
-      const actual = await SamlResponse.parse(encodedSamlResponse, false);
+      const actual = await SamlResponse.parse(encodedSamlResponse);
 
       expect(actual.assertions.length).to.equal(8);
       expectAsssertionToEqual(actual.assertions[0], 'http://schemas.microsoft.com/identity/claims/tenantid', '37c2dd70-7188-4743-a830-41936ecfbcab');
