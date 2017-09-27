@@ -1,18 +1,12 @@
 const ClientAdapter = require('./ClientAdapter');
+const Config = require('./../Config');
 const request = require('request-promise');
 const fs = require('fs');
 const path = require('path');
 
 class HotConfigClientAdapter extends ClientAdapter {
-  constructor(url, token, env) {
-    super();
-    this.url = url;
-    this.token = token;
-    this.env = env;
-  }
-
   async get(identifierUri) {
-    const clients = await _all(this.url, this.token, this.env);
+    const clients = await _all();
     for(let i = 0; i < clients.length; i++){
       if(clients[i].identifierUri.toLowerCase() === identifierUri.toLowerCase()) {
         return clients[i];
@@ -25,15 +19,15 @@ class HotConfigClientAdapter extends ClientAdapter {
 module.exports = HotConfigClientAdapter;
 
 
-async function _all(url, token, env) {
+async function _all() {
   const options = {
-    uri: url + '/samlclients',
+    uri: Config.hotConfig.url + '/samlclients',
     headers:{
-      authorization: `bearer ${token}`
+      authorization: `bearer ${Config.hotConfig.token}`
     }
   };
 
-  if(env == 'dev') {
+  if(Config.hostingEnvironment.env == 'dev') {
     options['agentOptions'] = {
       ca: fs.readFileSync(path.resolve('./ssl/hotconfig.cert'))
     };

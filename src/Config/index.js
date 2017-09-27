@@ -1,6 +1,4 @@
 const InMemoryCacheProvider = require('../Caching/InMemoryCacheProvider');
-const StaticClientAdapter = require('../Clients/StaticClientAdapter');
-const HotConfigClientAdapter = require('../Clients/HotConfigClientAdapter');
 const FileSystemCertificateAdapter = require('../Certificates/FileSystemCertificateAdapter');
 const fs = require('fs');
 const path = require('path');
@@ -26,7 +24,6 @@ module.exports = {
   },
   services: {
     cache: new InMemoryCacheProvider(),
-    clients: env == 'devmin' ? new StaticClientAdapter() : new HotConfigClientAdapter(hotConfigUrl, hotConfigToken, env),
     certificates: new FileSystemCertificateAdapter(path.resolve('./ssl'))
   },
   crypto: {
