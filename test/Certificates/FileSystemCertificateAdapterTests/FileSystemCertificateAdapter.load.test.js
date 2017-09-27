@@ -27,10 +27,7 @@ describe('When loading a certificate', function () {
     let expectedPrivateKey;
 
     beforeEach(function () {
-      const certPath = path.resolve('./test/data/test1.cert');
-      console.log(certPath);
-
-      expectedPublicKey = fs.readFileSync(certPath, 'utf8');
+      expectedPublicKey = fs.readFileSync(path.resolve('./test/data/test1.cert'), 'utf8');
       expectedPrivateKey = fs.readFileSync(path.resolve('./test/data/test1.key'), 'utf8');
     });
 
