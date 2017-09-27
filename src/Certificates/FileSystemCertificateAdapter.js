@@ -1,13 +1,10 @@
 const path = require('path');
 const fs = require('fs');
+const Config = require('./../Config');
 
 class FileSystemCertificateAdapter {
-  constructor(dir) {
-    this.dir = dir;
-  }
-
   load(id, includePrivateKey = false) {
-    const publicKeyPath = path.resolve(this.dir, id + '.cert');
+    const publicKeyPath = path.resolve(Config.certificates.storageRoot, id + '.cert');
     if (!fs.existsSync(publicKeyPath)) {
       throw new Error(`Cannot find certificate ${id}`);
     }
@@ -16,7 +13,7 @@ class FileSystemCertificateAdapter {
     let privateKey = null;
 
     if (includePrivateKey) {
-      const privateKeyPath = path.resolve(this.dir, id + '.key');
+      const privateKeyPath = path.resolve(Config.certificates.storageRoot, id + '.key');
       if (!fs.existsSync(privateKeyPath)) {
         throw new Error(`Cannot find certificate ${id}`);
       }

@@ -2,8 +2,10 @@ const SamlRequest = require('./SamlRequest');
 const uuid = require('./../Utils/Uuid');
 const Config = require('./../Config');
 const Clients = require('./../Clients');
+const Cache = require('./../Caching');
 
 const clientAdapter = new Clients();
+const cache = new Cache();
 
 module.exports = async (req, res) => {
   const originalSamlRequest = SamlRequest.parse(req.body.SAMLRequest);
@@ -39,7 +41,7 @@ module.exports = async (req, res) => {
       relayState: uuid()
     }
   };
-  Config.services.cache.set(newSamlRequest.id, context);
+  cache.set(newSamlRequest.id, context);
 
   res.render('redirecttoauthenticatingservice', {
     destination: Config.authenticatingServer.url,

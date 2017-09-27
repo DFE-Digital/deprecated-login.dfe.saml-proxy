@@ -1,15 +1,23 @@
-const FileSystemCertificateAdapter = require('./../../../src/Certificates/FileSystemCertificateAdapter');
+//const FileSystemCertificateAdapter = require('./../../../src/Certificates/FileSystemCertificateAdapter');
 
 const expect = require('chai').expect;
 const path = require('path');
 const fs = require('fs');
+const proxyquire = require('proxyquire');
 
 describe('When loading a certificate', function () {
 
   let adapter;
 
   beforeEach(function () {
-    adapter = new FileSystemCertificateAdapter(path.resolve('./test/data/'));
+    const FileSystemCertificateAdapter = proxyquire('./../../../src/Certificates/FileSystemCertificateAdapter', {
+      './../Config': {
+        certificates: {
+          storageRoot: path.resolve('./test/data/')
+        }
+      }
+    });
+    adapter = new FileSystemCertificateAdapter();
   });
 
   describe('that exists', function () {

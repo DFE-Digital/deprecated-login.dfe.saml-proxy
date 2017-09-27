@@ -2,16 +2,20 @@ const SamlResponse = require('./SamlResponse');
 const uuid = require('./../Utils/Uuid');
 const Config = require('./../Config');
 const Clients = require('./../Clients');
+const Cache = require('./../Caching');
+const Certificates = require('./../Certificates');
 
 const clientAdapter = new Clients();
+const cache = new Cache();
+const certificateAdapter = new Certificates();
 
 module.exports = async (req, res) => {
   const authServerResponse = await SamlResponse.parse(req.body.SAMLResponse);
-  const context = Config.services.cache.get(authServerResponse.inResponseTo);
+  const context = cache.get(authServerResponse.inResponseTo);
   const client = await clientAdapter.get(context.original.request.issuer);
   const now = new Date();
 
-  const certificate = Config.services.certificates.load(client.id);
+  const certificate = certificateAdapter.load(client.id);
   if(!authServerResponse.verify(certificate.publicKey)) {
     res.status(400);
     res.send('Received invalid response');

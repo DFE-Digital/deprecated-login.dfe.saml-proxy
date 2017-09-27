@@ -1,12 +1,7 @@
-const InMemoryCacheProvider = require('../Caching/InMemoryCacheProvider');
-const FileSystemCertificateAdapter = require('../Certificates/FileSystemCertificateAdapter');
 const fs = require('fs');
 const path = require('path');
 
 const env = (process.env.NODE_ENV ? process.env.NODE_ENV : 'dev');
-
-const hotConfigUrl = process.env.HOT_CONFIG_URL.endsWith('/') ? process.env.HOT_CONFIG_URL.substring(0, process.env.HOT_CONFIG_URL.length - 1) : process.env.HOT_CONFIG_URL;
-const hotConfigToken = process.env.HOT_CONFIG_TOKEN;
 
 module.exports = {
   hostingEnvironment: {
@@ -19,12 +14,11 @@ module.exports = {
     url: process.env.AUTHENTICATING_SERVER_URL
   },
   hotConfig: {
-    url: hotConfigUrl,
-    token: hotConfigToken
+    url: (process.env.HOT_CONFIG_URL && process.env.HOT_CONFIG_URL.endsWith('/')) ? process.env.HOT_CONFIG_URL.substring(0, process.env.HOT_CONFIG_URL.length - 1) : process.env.HOT_CONFIG_URL,
+    token: process.env.HOT_CONFIG_TOKEN
   },
-  services: {
-    cache: new InMemoryCacheProvider(),
-    certificates: new FileSystemCertificateAdapter(path.resolve('./ssl'))
+  certificates: {
+    storageRoot: path.resolve('./ssl')
   },
   crypto: {
     signing: {
