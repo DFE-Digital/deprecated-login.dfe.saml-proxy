@@ -8,9 +8,6 @@ describe('When loading a certificate', function () {
   let adapter;
 
   beforeEach(function () {
-    const testCertPath = path.resolve('./test/data/');
-    console.log(testCertPath);
-
     const FileSystemCertificateAdapter = proxyquire('./../../../src/Certificates/FileSystemCertificateAdapter', {
       './../Config': {
         certificates: {
