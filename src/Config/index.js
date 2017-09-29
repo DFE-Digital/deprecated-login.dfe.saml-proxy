@@ -3,6 +3,8 @@ const path = require('path');
 
 const env = (process.env.NODE_ENV ? process.env.NODE_ENV : 'dev');
 
+const hotConfigUrl  = process.env.HOT_CONFIG_URL ? process.env.HOT_CONFIG_URL : 'https://localhost:4432/';
+
 module.exports = {
   loggerSettings: {
     levels: {
@@ -26,8 +28,8 @@ module.exports = {
     url: process.env.AUTHENTICATING_SERVER_URL
   },
   hotConfig: {
-    url: (process.env.HOT_CONFIG_URL && process.env.HOT_CONFIG_URL.endsWith('/')) ? process.env.HOT_CONFIG_URL.substring(0, process.env.HOT_CONFIG_URL.length - 1) : process.env.HOT_CONFIG_URL,
-    token: process.env.HOT_CONFIG_TOKEN
+    url: hotConfigUrl.endsWith('/') ? hotConfigUrl.substring(0, hotConfigUrl.length - 1) : hotConfigUrl,
+    token: process.env.HOT_CONFIG_TOKEN ? process.env.HOT_CONFIG_TOKEN : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MDY2NzYyODEsImV4cCI6NDY2MDI3NjI4MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdCJ9.OOWQK63iIBzLXG7rx424fi10ae816_TRmW9SsR4NcmI'
   },
   certificates: {
     storageRoot: path.resolve('./ssl')

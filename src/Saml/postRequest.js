@@ -10,14 +10,19 @@ const cache = new Cache();
 module.exports = async (req, res) => {
   const originalSamlRequest = SamlRequest.parse(req.body.SAMLRequest);
   const relayState = req.body.RelayState;
+  const logger = req.app.get('logger');
+
+  logger.info(`Recieved HTTPPOST request for issuer '${originalSamlRequest.issuer}'`);
 
   const client = await clientAdapter.get(originalSamlRequest.issuer);
   if(client == null) {
+    logger.info(`Cannot find client for issuer '${originalSamlRequest.issuer}'`);
     res.status(400);
     res.send('Invalid request');
     return;
   }
   if(!originalSamlRequest.validate(client)) {
+    logger.info(`Validation failed for issuer '${originalSamlRequest.issuer}' / client '${client.id}'`);
     res.status(400);
     res.send('Invalid request');
     return;
