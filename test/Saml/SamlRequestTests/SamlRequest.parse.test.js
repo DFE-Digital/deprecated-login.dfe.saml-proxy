@@ -16,8 +16,8 @@ describe('When parsing a valid request', function() {
             '  <saml2:Issuer>https://localhost:3941/1232190a</saml2:Issuer>\n' +
             '</saml2p:AuthnRequest>').toString('base64');
 
-        it('then it should return an instance of SamlRequest that has type Authn', function() {
-            const actual = SamlRequest.parse(validAuthnRequest);
+        it('then it should return an instance of SamlRequest that has type Authn', async function() {
+            const actual = await SamlRequest.parse(validAuthnRequest);
 
             expect(actual).to.not.be.null;
             expect(actual).to.be.an('object');
@@ -26,8 +26,8 @@ describe('When parsing a valid request', function() {
             expect(actual.type).to.equal('Authn');
         });
 
-        it('then it should parse generic properties from request', function() {
-            const actual = SamlRequest.parse(validAuthnRequest);
+        it('then it should parse generic properties from request', async function() {
+            const actual = await SamlRequest.parse(validAuthnRequest);
 
             expect(actual.id).to.equal('idf6a91730cfe0410791224c3ff6e7281e');
             expect(actual.destination).to.equal('http://localhost:8472/Saml');
@@ -41,8 +41,8 @@ describe('When parsing a valid request', function() {
             expect(actual.issueInstant.getUTCSeconds()).to.equal(24);
         });
 
-        it('then it should parse specific Authn properties from request', function() {
-            const actual = SamlRequest.parse(validAuthnRequest);
+        it('then it should parse specific Authn properties from request', async function() {
+            const actual = await SamlRequest.parse(validAuthnRequest);
 
             expect(actual.assertionConsumerServiceUrl).to.equal('http://localhost:6948/AuthServices/Acs');
         });

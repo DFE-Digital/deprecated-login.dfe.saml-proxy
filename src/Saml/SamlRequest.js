@@ -1,6 +1,7 @@
 const Buffer = require('buffer').Buffer;
 const DOMParser = require('xmldom').DOMParser;
 const XmlHelper = require('../Utils/XmlHelper');
+const xmlParser = require('xml2js').parseString;
 
 const SamlPNS = 'urn:oasis:names:tc:SAML:2.0:protocol';
 const Saml2NS = 'urn:oasis:names:tc:SAML:2.0:assertion';
@@ -48,20 +49,21 @@ class SamlRequest {
     return new Buffer(xml).toString('base64');
   }
 
-  static parse(encodedSamlRequest) {
+  static async parse(encodedSamlRequest) {
     const xml = Buffer.from(encodedSamlRequest, 'base64').toString();
-    const doc = new DOMParser().parseFromString(xml);
 
+    const doc = await _parseXml(xml);
+    const request = doc[Object.keys(doc)[0]];
     const requestType = _parseRequestType(doc);
     const requestData = {
-      id: doc.documentElement.getAttribute('ID'),
-      issueInstant: new Date(doc.documentElement.getAttribute('IssueInstant')),
-      destination: doc.documentElement.getAttribute('Destination'),
-      issuer: doc.documentElement.getElementsByTagNameNS(Saml2NS, 'Issuer')[0].childNodes[0].data
+      id: request.$.ID,
+      issueInstant: new Date(request.$.IssueInstant),
+      destination: request.$.Destination,
+      issuer: typeof request.Issuer[0] == 'string' ? request.Issuer[0] : request.Issuer[0]._
     };
 
     if (requestType == 'Authn') {
-      requestData['assertionConsumerServiceUrl'] = doc.documentElement.getAttribute('AssertionConsumerServiceURL');
+      requestData['assertionConsumerServiceUrl'] = request.$.AssertionConsumerServiceURL;
     }
 
     return new SamlRequest(requestType, requestData);
@@ -72,11 +74,28 @@ module.exports = SamlRequest;
 
 
 function _parseRequestType(doc) {
-  let requestType = doc.documentElement.localName;
+  let requestType = Object.keys(doc)[0];
 
   if (requestType.endsWith('Request')) {
     requestType = requestType.substring(0, requestType.length - 7);
   }
 
   return requestType;
+}
+function _parseXml(xml) {
+  return new Promise((resolve) => {
+    xmlParser(xml, {
+      tagNameProcessors: [_stripPrefix]
+    }, (err, result) => {
+      resolve(result);
+    });
+  });
+}
+
+function _stripPrefix(name) {
+  const match = name.match(/(.*)\:(.*)/);
+  if (match && match.length > 1) {
+    return match[2];
+  }
+  return name;
 }
