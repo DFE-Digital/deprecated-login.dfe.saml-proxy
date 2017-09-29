@@ -28,9 +28,7 @@ async function _all() {
   };
 
   if(Config.hostingEnvironment.env == 'dev') {
-    options['agentOptions'] = {
-      ca: fs.readFileSync(path.resolve('./ssl/hotconfig.cert'))
-    };
+    options.strictSSL = false;
   }
 
   const json = await request(options);
