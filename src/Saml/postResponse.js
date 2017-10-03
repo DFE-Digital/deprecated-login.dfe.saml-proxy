@@ -17,8 +17,8 @@ module.exports = async (req, res) => {
 
   const certificate = certificateAdapter.load(client.id);
   if(!authServerResponse.verify(certificate.publicKey)) {
-    res.status(400);
-    res.send('Received invalid response');
+    res.status(400).send('Received invalid response');
+    return;
   }
 
   var response = new SamlResponse({

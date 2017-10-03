@@ -1,1 +1,1 @@
-module.exports = require('./FileSystemCertificateAdapter');
+module.exports = require('./ConfigCertificateAdapter');
