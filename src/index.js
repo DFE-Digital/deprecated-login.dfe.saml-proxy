@@ -37,8 +37,8 @@ if (config.hostingEnvironment.env == 'dev') {
 
     const https = require('https');
     const options = {
-        key: fs.readFileSync('./ssl/localhost.key'),
-        cert: fs.readFileSync('./ssl/localhost.cert'),
+        key: config.hostingEnvironment.sslKey,
+        cert: config.hostingEnvironment.sslCert,
         requestCert: false,
         rejectUnauthorized: false
     };
@@ -48,7 +48,7 @@ if (config.hostingEnvironment.env == 'dev') {
         logger.info(`Dev server listening on https://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}`);
     })
 } else {
-    app.listen(config.hostingEnvironment.port, function() {
-        logger.info(`Dev server listening on http://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}`);
+    app.listen(process.env.PORT, function() {
+        logger.info(`Dev server listening on http://${config.hostingEnvironment.host}:${process.env.PORT}`);
     });
 }

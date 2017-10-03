@@ -8,7 +8,7 @@ const clientAdapter = new Clients();
 const cache = new Cache();
 
 module.exports = async (req, res) => {
-  const originalSamlRequest = SamlRequest.parse(req.body.SAMLRequest);
+  const originalSamlRequest = await SamlRequest.parse(req.body.SAMLRequest);
   const relayState = req.body.RelayState;
   const logger = req.app.get('logger');
 
