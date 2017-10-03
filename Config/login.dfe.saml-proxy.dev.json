@@ -1,0 +1,30 @@
+{
+  "loggerSettings": {
+    "levels": {
+      "info": 0,
+      "ok": 1,
+      "error": 2
+    },
+    "colors": {
+      "info": "yellow",
+      "ok": "green",
+      "error": "red"
+    }
+  },
+  "hostingEnvironment": {
+    "env": "dev",
+    "host": "localhost",
+    "port": 4433,
+    "protocol": "https"
+  },
+  "authenticatingServer": {
+    "url": "https://login.microsoftonline.com/37c2dd70-7188-4743-a830-41936ecfbcab/saml2"
+  },
+  "hotConfig": {
+    "url": "https://localhost:4432",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1MDY2NzYyODEsImV4cCI6NDY2MDI3NjI4MSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdCJ9.OOWQK63iIBzLXG7rx424fi10ae816_TRmW9SsR4NcmI"
+  },
+  "certificates": {
+    "storageRoot": "./ssl"
+  }
+}
