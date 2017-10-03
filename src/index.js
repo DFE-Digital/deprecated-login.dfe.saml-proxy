@@ -48,7 +48,7 @@ if (config.hostingEnvironment.env == 'dev') {
         logger.info(`Dev server listening on https://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}`);
     })
 } else {
-    app.listen(config.hostingEnvironment.port, function() {
-        logger.info(`Dev server listening on http://${config.hostingEnvironment.host}:${config.hostingEnvironment.port}`);
+    app.listen(process.env.PORT, function() {
+        logger.info(`Dev server listening on http://${config.hostingEnvironment.host}:${process.env.PORT}`);
     });
 }
