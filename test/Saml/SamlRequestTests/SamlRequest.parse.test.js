@@ -1,6 +1,4 @@
 const { Buffer } = require('buffer');
-const expect = require('chai').expect;
-
 const SamlRequest = require('./../../../src/Saml/SamlRequest');
 
 describe('When parsing a valid request', () => {
@@ -18,32 +16,29 @@ describe('When parsing a valid request', () => {
     it('then it should return an instance of SamlRequest that has type Authn', async () => {
       const actual = await SamlRequest.parse(validAuthnRequest);
 
-      expect(actual).to.not.be.null;
-      expect(actual).to.be.an('object');
-      expect(actual).to.have.property('type');
-
-      expect(actual.type).to.equal('Authn');
+      expect(actual).not.toBeNull();
+      expect(actual).toHaveProperty('type','Authn');
     });
 
     it('then it should parse generic properties from request', async () => {
       const actual = await SamlRequest.parse(validAuthnRequest);
 
-      expect(actual.id).to.equal('idf6a91730cfe0410791224c3ff6e7281e');
-      expect(actual.destination).to.equal('http://localhost:8472/Saml');
-      expect(actual.issuer).to.equal('https://localhost:3941/1232190a');
+      expect(actual.id).toBe('idf6a91730cfe0410791224c3ff6e7281e');
+      expect(actual.destination).toBe('http://localhost:8472/Saml');
+      expect(actual.issuer).toBe('https://localhost:3941/1232190a');
 
-      expect(actual.issueInstant.getUTCFullYear()).to.equal(2017);
-      expect(actual.issueInstant.getUTCMonth()).to.equal(8);
-      expect(actual.issueInstant.getUTCDate()).to.equal(18);
-      expect(actual.issueInstant.getUTCHours()).to.equal(6);
-      expect(actual.issueInstant.getUTCMinutes()).to.equal(45);
-      expect(actual.issueInstant.getUTCSeconds()).to.equal(24);
+      expect(actual.issueInstant.getUTCFullYear()).toBe(2017);
+      expect(actual.issueInstant.getUTCMonth()).toBe(8);
+      expect(actual.issueInstant.getUTCDate()).toBe(18);
+      expect(actual.issueInstant.getUTCHours()).toBe(6);
+      expect(actual.issueInstant.getUTCMinutes()).toBe(45);
+      expect(actual.issueInstant.getUTCSeconds()).toBe(24);
     });
 
     it('then it should parse specific Authn properties from request', async () => {
       const actual = await SamlRequest.parse(validAuthnRequest);
 
-      expect(actual.assertionConsumerServiceUrl).to.equal('http://localhost:6948/AuthServices/Acs');
+      expect(actual.assertionConsumerServiceUrl).toBe('http://localhost:6948/AuthServices/Acs');
     });
   });
 });

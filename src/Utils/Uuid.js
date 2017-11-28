@@ -1,7 +1,7 @@
-const uuidv4 = require('uuid/v4');
+const { v4 } = require('uuid');
 
 function newUuid(lowerCase = true, includeHyphens = false) {
-  let uuid = uuidv4();
+  let uuid = v4();
   if (!lowerCase) {
     uuid = uuid.toUpperCase();
   }
