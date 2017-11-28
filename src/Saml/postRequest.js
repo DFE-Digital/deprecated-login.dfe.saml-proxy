@@ -1,11 +1,9 @@
 const SamlRequest = require('./SamlRequest');
 const uuid = require('./../Utils/Uuid');
 const Config = require('./../Config');
-const Clients = require('./../Clients');
-const Cache = require('./../Caching');
+const clients = require('./../Clients');
+const cache = require('./../Caching');
 
-const clientAdapter = new Clients();
-const cache = new Cache();
 
 module.exports = async (req, res) => {
   const originalSamlRequest = await SamlRequest.parse(req.body.SAMLRequest);
@@ -14,14 +12,14 @@ module.exports = async (req, res) => {
 
   logger.info(`Recieved HTTPPOST request for issuer '${originalSamlRequest.issuer}'`);
 
-  const client = await clientAdapter.get(originalSamlRequest.issuer);
-  if(client == null) {
+  const client = await clients.get(originalSamlRequest.issuer);
+  if (!client) {
     logger.info(`Cannot find client for issuer '${originalSamlRequest.issuer}'`);
     res.status(400);
     res.send('Invalid request');
     return;
   }
-  if(!originalSamlRequest.validate(client)) {
+  if (!originalSamlRequest.validate(client)) {
     logger.info(`Validation failed for issuer '${originalSamlRequest.issuer}' / client '${client.id}'`);
     res.status(400);
     res.send('Invalid request');
@@ -33,24 +31,24 @@ module.exports = async (req, res) => {
     issueInstant: new Date(),
     destination: Config.authenticatingServer.url,
     issuer: client.identifierUri,
-    assertionConsumerServiceUrl: `${Config.hostingEnvironment.protocol}://${Config.hostingEnvironment.host}:${Config.hostingEnvironment.port}/saml/response`
+    assertionConsumerServiceUrl: `${Config.hostingEnvironment.protocol}://${Config.hostingEnvironment.host}:${Config.hostingEnvironment.port}/saml/response`,
   });
 
   const context = {
     original: {
       request: originalSamlRequest,
-      relayState: relayState
+      relayState,
     },
     internal: {
       request: newSamlRequest,
-      relayState: uuid()
-    }
+      relayState: uuid(),
+    },
   };
   cache.set(newSamlRequest.id, context);
 
   res.render('redirecttoauthenticatingservice', {
     destination: Config.authenticatingServer.url,
     samlRequest: newSamlRequest.toXmlString(),
-    relayState: context.internal.relayState
+    relayState: context.internal.relayState,
   });
 };

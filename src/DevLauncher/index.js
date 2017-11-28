@@ -3,9 +3,9 @@
 const express = require('express');
 const uuid = require('./../Utils/Uuid');
 const SamlRequest = require('./../Saml/SamlRequest');
-const Config = require('./../Config')
+const Config = require('./../Config');
 
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 
 module.exports = () => {
   router.get('/', (req, res) => {
@@ -15,25 +15,24 @@ module.exports = () => {
       issueInstant: new Date(),
       destination: `${serverBaseUrl}/saml`,
       issuer: 'https://localhost:4433/470d8218-a230-11e7-abc4-cec278b6b50a',
-      assertionConsumerServiceUrl: `${serverBaseUrl}/dev/samlresponse`
+      assertionConsumerServiceUrl: `${serverBaseUrl}/dev/samlresponse`,
     });
 
     res.render('dev/launchPad', {
       auth: {
-        destination:`${serverBaseUrl}/saml`,
+        destination: `${serverBaseUrl}/saml`,
         samlRequest: samlRequest.toXmlString(),
-        relayState: uuid()
-      }
+        relayState: uuid(),
+      },
     });
   });
 
   router.post('/dev/samlresponse', (req, res) => {
     res.render('dev/samlresponse', {
       samlResponse: req.body.SAMLResponse,
-      relayState: req.body.RelayState
+      relayState: req.body.RelayState,
     });
   });
 
   return router;
-
 };
