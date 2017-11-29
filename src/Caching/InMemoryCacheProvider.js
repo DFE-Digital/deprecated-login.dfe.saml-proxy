@@ -1,22 +1,19 @@
-const CacheProvider = require('./CacheProvider');
 const LRU = require('lru-cache');
 
 const storage = new LRU({});
 
-class InMemoryCacheProvider extends CacheProvider {
+const get = key => storage.get(key);
 
-  get(key) {
-    return storage.get(key);
-  }
+const set = (key, value) => {
+  storage.set(key, value);
+};
 
-  set(key, value) {
-    storage.set(key, value);
-  }
+const remove = (key) => {
+  storage.del(key);
+};
 
-  remove(key) {
-    storage.del(key);
-  }
-
-}
-
-module.exports = InMemoryCacheProvider
+module.exports = {
+  get,
+  set,
+  remove,
+};

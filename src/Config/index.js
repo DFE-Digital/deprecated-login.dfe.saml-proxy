@@ -3,9 +3,6 @@
 const fs = require('fs');
 const Path = require('path');
 
-const env = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
-const isDev = env === 'dev';
-
 const getSettingsObject = (settings) => {
   try {
     return JSON.parse(settings);
@@ -28,7 +25,7 @@ const getSettingsFromFile = (settingsPath) => {
 
 const fetchConfig = () => {
   if (process.env.settings) {
-    const settings = process.env.settings;
+    const { settings } = process.env;
     let settingsObject = getSettingsObject(settings);
     if (settingsObject !== null) {
       return settingsObject;
@@ -45,4 +42,4 @@ const fetchConfig = () => {
   throw new Error('Missing configuration');
 };
 
-module.exports = fetchConfig();
+module.exports = fetchConfig;
